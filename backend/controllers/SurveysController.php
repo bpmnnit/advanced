@@ -115,8 +115,9 @@ class SurveysController extends Controller
      */
     public function actionDelete($id)
     {
+        $data = Surveys::findOne($id);
+        unlink(Yii::getAlias('@backend/').'web/'.$data->survey_information);
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
