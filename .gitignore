@@ -43,5 +43,5 @@ phpunit.phar
 /backend/web/robots.txt
 
 # ignore the uploads folder
-/web/uploads
-/web/images
+/backend/web/uploads
+/backend/web/images
