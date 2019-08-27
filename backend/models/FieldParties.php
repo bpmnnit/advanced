@@ -14,11 +14,10 @@ use Yii;
  * @property int $field_party_chief
  * @property string $field_party_create_date
  *
- * @property DailyProgressReports $dailyProgressReports
- * @property Surveys[] $dailyProgressReports0
+ * @property Surveys[] $surveys
+ * @property DprOnland[] $dprOnlands
  * @property Manpowers $fieldPartyChief
  * @property Regions $fieldPartyRegion
- * @property Targets $targets
  */
 class FieldParties extends \yii\db\ActiveRecord
 {
@@ -40,7 +39,6 @@ class FieldParties extends \yii\db\ActiveRecord
             [['field_party_type'], 'string'],
             [['field_party_create_date'], 'safe'],
             [['field_party_name'], 'string', 'max' => 45],
-            [['field_party_name'], 'unique'],
             [['field_party_chief'], 'exist', 'skipOnError' => true, 'targetClass' => Manpowers::className(), 'targetAttribute' => ['field_party_chief' => 'manpower_cpf']],
             [['field_party_region'], 'exist', 'skipOnError' => true, 'targetClass' => Regions::className(), 'targetAttribute' => ['field_party_region' => 'region_id']],
         ];
@@ -64,22 +62,6 @@ class FieldParties extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDailyProgressReports()
-    {
-        return $this->hasOne(DailyProgressReports::className(), ['daily_progress_report_id' => 'field_party_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDailyProgressReports0()
-    {
-        return $this->hasMany(Surveys::className(), ['survey_id' => 'daily_progress_report_id'])->viaTable('daily_progress_reports', ['daily_progress_report_id' => 'field_party_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFieldPartyChief()
     {
         return $this->hasOne(Manpowers::className(), ['manpower_cpf' => 'field_party_chief']);
@@ -96,8 +78,16 @@ class FieldParties extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTargets()
+    public function getSurveys()
     {
-        return $this->hasOne(Targets::className(), ['target_id' => 'field_party_id']);
+        return $this->hasMany(Surveys::className(), ['survey_field_party' => 'field_party_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDprOnlands()
+    {
+        return $this->hasMany(DprOnland::className(), ['dpr_field_party' => 'field_party_id']);
     }
 }

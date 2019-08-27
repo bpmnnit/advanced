@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Postings */
 
-$this->title = $model->posting_id;
+$this->title = 'Posting: '.$model->postingCpf->manpower_name;
 $this->params['breadcrumbs'][] = ['label' => 'Postings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,10 +29,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'posting_id',
-            'posting_cpf',
-            'posting_region',
+            [
+                'attribute' => 'posting_cpf',
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->postingCpf->manpower_name, ['manpowers/view', 'id' => $model->posting_cpf], ['data-pjax' => '0']);
+                }
+            ],
             'posting_at',
+            [
+                'attribute' => 'posting_region',
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->postingRegion->region_name, ['regions/view', 'id' => $model->posting_region], ['data-pjax' => '0']);
+                }
+            ],
             'posting_on',
         ],
     ]) ?>

@@ -64,8 +64,6 @@ class PostingsSearch extends Postings
         // grid filtering conditions
         $query->andFilterWhere([
             'posting_id' => $this->posting_id,
-            //'posting_cpf' => $this->posting_cpf,
-            //'posting_region' => $this->posting_region,
             'posting_on' => $this->posting_on,
         ]);
 

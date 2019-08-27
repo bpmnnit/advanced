@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\FieldParties */
 
-$this->title = $model->field_party_id;
+$this->title = $model->field_party_name;
 $this->params['breadcrumbs'][] = ['label' => 'Field Parties', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,17 +29,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'field_party_id',
             'field_party_name',
             'field_party_type',
-            'field_party_region',
-            //'field_party_chief',
             [
                 'attribute' => 'field_party_chief',
-                'value' => 'fieldPartyChief.manpower_name',
-
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->fieldPartyChief->manpower_name, ['manpowers/view', 'id' => $model->field_party_chief], ['data-pjax' => '0']);
+                }
             ],
-            'field_party_create_date',
+            [
+                'attribute' => 'field_party_region',
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->fieldPartyRegion->region_name, ['regions/view', 'id' => $model->field_party_region], ['data-pjax' => '0']);
+                }
+            ],
         ],
     ]) ?>
 

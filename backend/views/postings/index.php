@@ -26,22 +26,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            //'posting_id',
-            
             [
                 'attribute' => 'posting_cpf',
-                'value' => 'postingCpf.manpower_name',
-
-            ],
-            [
-                'attribute' => 'posting_region',
-                'value' => 'postingRegion.region_name',
-
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->postingCpf->manpower_name, ['manpowers/view', 'id' => $model->posting_cpf], ['data-pjax' => '0']);
+                }
             ],
             'posting_at',
+            [
+                'attribute' => 'posting_region',
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->postingRegion->region_name, ['regions/view', 'id' => $model->posting_region], ['data-pjax' => '0']);
+                }
+            ],
             'posting_on',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

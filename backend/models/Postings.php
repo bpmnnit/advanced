@@ -48,10 +48,9 @@ class Postings extends \yii\db\ActiveRecord
     {
         return [
             'posting_id' => 'ID',
-            //'posting_cpf' => 'CPF',
             'posting_cpf' => 'Name',
-            'posting_region' => 'Region',
             'posting_at' => 'Posted At',
+            'posting_region' => 'Region',
             'posting_on' => 'Posting Date',
         ];
     }

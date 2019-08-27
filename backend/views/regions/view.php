@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Regions */
 
-$this->title = $model->region_id;
+$this->title = $model->region_name;
 $this->params['breadcrumbs'][] = ['label' => 'Regions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,7 +29,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'region_id',
             'region_name',
             'region_description:ntext',
             'region_create_date',

@@ -17,8 +17,8 @@ class FieldPartiesSearch extends FieldParties
     public function rules()
     {
         return [
-            [['field_party_id', 'field_party_number', 'field_party_region', 'field_party_chief'], 'integer'],
-            [['field_party_name', 'field_party_type', 'field_party_create_date'], 'safe'],
+            [['field_party_id'], 'integer'],
+            [['field_party_name', 'field_party_type', 'field_party_create_date', 'field_party_region', 'field_party_chief'], 'safe'],
         ];
     }
 
@@ -48,6 +48,8 @@ class FieldPartiesSearch extends FieldParties
             'query' => $query,
         ]);
 
+
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -56,17 +58,21 @@ class FieldPartiesSearch extends FieldParties
             return $dataProvider;
         }
 
+        $query->joinWith('fieldPartyChief');
+        $query->joinWith('fieldPartyRegion');
+
         // grid filtering conditions
         $query->andFilterWhere([
             'field_party_id' => $this->field_party_id,
-            'field_party_number' => $this->field_party_number,
             'field_party_region' => $this->field_party_region,
             'field_party_chief' => $this->field_party_chief,
             'field_party_create_date' => $this->field_party_create_date,
         ]);
 
         $query->andFilterWhere(['like', 'field_party_name', $this->field_party_name])
-            ->andFilterWhere(['like', 'field_party_type', $this->field_party_type]);
+            ->andFilterWhere(['like', 'field_party_type', $this->field_party_type])
+            ->andFilterWhere(['like', 'manpowers.manpower_name', $this->field_party_chief])
+            ->andFilterWhere(['like', 'regions.region_name', $this->field_party_region]);
 
         return $dataProvider;
     }

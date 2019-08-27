@@ -26,8 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            //'region_id',
             'region_name',
             'region_description:ntext',
             'region_create_date',

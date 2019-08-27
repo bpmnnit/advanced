@@ -26,24 +26,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            //'field_party_id',
-            //'field_party_number',
             'field_party_name',
             'field_party_type',
             [
                 'attribute' => 'field_party_region',
-                'value' => 'fieldPartyRegion.region_name',
-
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->fieldPartyRegion->region_name, ['regions/view', 'id' => $model->field_party_region], ['data-pjax' => '0']);
+                }
             ],
-            //'field_party_chief',
             [
                 'attribute' => 'field_party_chief',
-                'value' => 'fieldPartyChief.manpower_name',
-
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->fieldPartyChief->manpower_name, ['manpowers/view', 'id' => $model->field_party_chief], ['data-pjax' => '0']);
+                }
             ],
-            //'field_party_create_date',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -1,7 +1,5 @@
 <?php
 
-use backend\models\FieldParties;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -28,10 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            //'survey_id',
-            'survey_sig',
-            'survey_name',
             [
                 'attribute' => 'survey_region',
                 'format' => 'html', // use this to generate the <a> tag properly
@@ -40,7 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->surveyRegion->region_name, ['regions/view', 'id' => $model->survey_region], ['data-pjax' => '0']);
                 }
             ],
-            'survey_description:ntext',
+            'survey_sig',
+            'survey_name',
             [
                 'attribute' => 'survey_field_party',
                 'format' => 'html', // use this to generate the <a> tag properly
@@ -49,8 +44,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->surveyFieldParty->field_party_name, ['field-parties/view', 'id' => $model->survey_field_party], ['data-pjax' => '0']);
                 }
             ],
-            //'survey_information',
-            //'surveyFieldParty.field_party_name'
+            'survey_onshore_offshore',
+            'survey_description:ntext',
+            'survey_shot_type',
+            'survey_acq_type',
+            'survey_area_name',
             [
                 'attribute' => 'survey_information',
                 'format' => 'raw',
@@ -58,7 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->survey_name, ['surveys/download', 'survey_id' => $model->survey_id], ['data-pjax' => '0']);
                 }
             ],
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

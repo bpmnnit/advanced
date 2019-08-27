@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Manpowers */
 
-$this->title = $model->manpower_cpf;
+$this->title = $model->manpower_name;
 $this->params['breadcrumbs'][] = ['label' => 'Manpowers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

@@ -26,7 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'manpower_cpf',
             'manpower_name',
             'manpower_designation',
@@ -34,8 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'manpower_discipline',
             'manpower_level',
             'manpower_mobile_number',
-            //'manpower_create_date',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Manpowers */
 
-$this->title = 'Update Manpowers: ' . $model->manpower_cpf;
+$this->title = 'Update Manpowers: ' . $model->manpower_name;
 $this->params['breadcrumbs'][] = ['label' => 'Manpowers', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->manpower_cpf, 'url' => ['view', 'id' => $model->manpower_cpf]];
+$this->params['breadcrumbs'][] = ['label' => $model->manpower_name, 'url' => ['view', 'id' => $model->manpower_cpf]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="manpowers-update">

@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Postings */
 
-$this->title = 'Update Postings: ' . $model->posting_id;
+$this->title = 'Update Postings for: ' . $model->postingCpf->manpower_name;
 $this->params['breadcrumbs'][] = ['label' => 'Postings', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->posting_id, 'url' => ['view', 'id' => $model->posting_id]];
+$this->params['breadcrumbs'][] = ['label' => $model->postingCpf->manpower_name, 'url' => ['view', 'id' => $model->posting_id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="postings-update">
