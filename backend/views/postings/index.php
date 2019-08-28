@@ -1,5 +1,6 @@
 <?php
 
+use dosamigos\datepicker\DatePicker;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
@@ -41,7 +42,19 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->postingRegion->region_name, ['regions/view', 'id' => $model->posting_region], ['data-pjax' => '0']);
                 }
             ],
-            'posting_on',
+            [
+                'attribute' => 'posting_on',
+                'value' => 'posting_on',
+                'format' => 'raw',
+                'filter' => DatePicker::widget([
+                    'model' => $searchModel,
+                    'attribute' => 'posting_on',
+                    'clientOptions' => [
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd',
+                    ],
+                ]),
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
