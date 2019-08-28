@@ -6,14 +6,15 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\DprOnland */
 
-$this->title = $model->dpr_id;
-$this->params['breadcrumbs'][] = ['label' => 'Dpr Onlands', 'url' => ['index']];
+$this->title = $model->dpr_date;
+$this->params['breadcrumbs'][] = ['label' => 'Onland DPR', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="dpr-onland-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h3><?= Html::encode($model->dprFieldParty->field_party_name) ?></h3>
+    <h4><?= $model->dpr_date ?></h4>
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->dpr_id], ['class' => 'btn btn-primary']) ?>
@@ -29,19 +30,32 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'dpr_id',
             'dpr_date',
-            'dpr_field_party',
+            [
+                'attribute' => 'dpr_field_party',
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->dprFieldParty->field_party_name, ['field-parties/view', 'id' => $model->dpr_field_party], ['data-pjax' => '0']);
+                }
+            ],
             'dpr_shots_acc',
             'dpr_shots_rej',
             'dpr_shots_skip',
+            'dpr_shots_rep',
             'dpr_shots_rec',
-            'dpr_conv_factor',
-            'dpr_coverage',
+            [
+                'attribute' => 'dpr_conv_factor',
+                //'contentOptions' => ['class' => 'col-lg-1'],
+                'format' => ['decimal', 4],
+            ],
+            [
+                'attribute' => 'dpr_coverage',
+                //'contentOptions' => ['class' => 'col-lg-1'],
+                'format' => ['decimal', 4],
+            ],
             'dpr_area',
             'dpr_shot_type',
             'dpr_acq_type',
-            'dpr_party_type',
         ],
     ]) ?>
 

@@ -64,8 +64,6 @@ class FieldPartiesSearch extends FieldParties
         // grid filtering conditions
         $query->andFilterWhere([
             'field_party_id' => $this->field_party_id,
-            'field_party_region' => $this->field_party_region,
-            'field_party_chief' => $this->field_party_chief,
             'field_party_create_date' => $this->field_party_create_date,
         ]);
 

@@ -38,6 +38,8 @@ class DprOnlandController extends Controller
         $searchModel = new DprOnlandSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $dataProvider->pagination->pageSize = 40;
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -66,7 +68,10 @@ class DprOnlandController extends Controller
     {
         $model = new DprOnland();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $model->dpr_conv_factor,4, '.','');
+            $model->save();
             return $this->redirect(['view', 'id' => $model->dpr_id]);
         }
 

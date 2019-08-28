@@ -70,7 +70,7 @@ class SurveysSearch extends Surveys
             ->andFilterWhere(['like', 'survey_shot_type', $this->survey_shot_type])
             ->andFilterWhere(['like', 'survey_acq_type', $this->survey_acq_type])
             ->andFilterWhere(['like', 'survey_area_name', $this->survey_area_name])
-            ->andFilterWhere(['like', 'survey_information', $this->survey_information])
+            ->andFilterWhere(['like', 'survey_name', $this->survey_information])
             ->andFilterWhere(['like', 'survey_onshore_offshore', $this->survey_onshore_offshore])
             ->andFilterWhere(['like', 'survey_create_date', $this->survey_create_date])
             ->andFilterWhere(['like', 'field_parties.field_party_name', $this->survey_field_party])

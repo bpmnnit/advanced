@@ -21,7 +21,7 @@ use yii\helpers\ArrayHelper;
         // inline too, not bad
         'inline' => false, 
         // modify template for custom rendering
-        // 'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
+        //'template' => '<div class="well well-sm" style="background-color: #fff; width:250px">{input}</div>',
         'clientOptions' => [
             'autoclose' => true,
             'format' => 'yyyy-mm-dd',
@@ -43,17 +43,17 @@ use yii\helpers\ArrayHelper;
 
     <?= $form->field($model, 'dpr_shots_skip')->textInput() ?>
 
+    <?= $form->field($model, 'dpr_shots_rep')->textInput() ?>
+
     <?= $form->field($model, 'dpr_shots_rec')->textInput() ?>
 
     <?= $form->field($model, 'dpr_conv_factor')->textInput() ?>
 
     <?= $form->field($model, 'dpr_area')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'dpr_shot_type')->dropDownList([ 'EXPLOSIVE' => 'EXPLOSIVE', 'VIBROSEIS' => 'VIBROSEIS', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'dpr_shot_type')->dropDownList([ 'EXPLOSIVE' => 'EXPLOSIVE', 'VIBROSEIS' => 'VIBROSEIS', ], ['prompt' => 'Select Shot Type...']) ?>
 
-    <?= $form->field($model, 'dpr_acq_type')->dropDownList([ '3D' => '3D', '2D' => '2D', '3D3C' => '3D3C', '4D' => '4D', '4D3C' => '4D3C', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'dpr_party_type')->dropDownList([ 'DEPARTMENTAL' => 'DEPARTMENTAL', 'OUTSOURCED' => 'OUTSOURCED', ], ['prompt' => '']) ?>
+    <?= $form->field($model, 'dpr_acq_type')->dropDownList([ '3D' => '3D', '2D' => '2D', '3D3C' => '3D3C', '4D' => '4D', '4D3C' => '4D3C', ], ['prompt' => 'Select Acquisition Type...']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
