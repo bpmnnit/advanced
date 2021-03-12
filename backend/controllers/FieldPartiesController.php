@@ -4,10 +4,12 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\FieldParties;
+use backend\models\DprOnland;
 use backend\models\FieldPartiesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * FieldPartiesController implements the CRUD actions for FieldParties model.
@@ -26,6 +28,17 @@ class FieldPartiesController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            // 'access' => [
+            //     'class' => AccessControl::className(),
+            //     'only' => ['index', 'view', 'create', 'update', 'delete'],
+            //     'rules' => [
+            //         [
+            //             'allow' => true,
+            //             'actions' => ['index', 'view', 'create', 'update', 'delete'],
+            //             'roles' => ['@'],
+            //         ],
+            //     ],
+            // ],
         ];
     }
 
@@ -52,8 +65,12 @@ class FieldPartiesController extends Controller
      */
     public function actionView($id)
     {
+        $que = "SELECT * FROM dpr_onland WHERE dpr_field_party = $id AND dpr_date BETWEEN '2018-11-13' AND '2018-11-20'";
+        $dpr = DprOnland::findBySql('SELECT * FROM dpr_onland WHERE dpr_field_party ='.$id)->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dpr' => $dpr,
+            'que' => $que,
         ]);
     }
 

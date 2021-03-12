@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Create DPR', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -38,24 +39,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->dprFieldParty->field_party_name, ['field-parties/view', 'id' => $model->dpr_field_party], ['data-pjax' => '0']);
                 }
             ],
+            [
+                'attribute' => 'dpr_si',
+                'format' => 'html',
+                'value' => function($model) {
+                    return Html::a($model->dprSi->si_no . ' ('. $model->dprSi->si_area . ')', ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
+                }
+            ],
             'dpr_shots_acc',
             'dpr_shots_rej',
             'dpr_shots_skip',
             'dpr_shots_rep',
             'dpr_shots_rec',
             [
-                'attribute' => 'dpr_conv_factor',
-                //'contentOptions' => ['class' => 'col-lg-1'],
-                'format' => ['decimal', 4],
-            ],
-            [
                 'attribute' => 'dpr_coverage',
                 //'contentOptions' => ['class' => 'col-lg-1'],
                 'format' => ['decimal', 4],
             ],
-            'dpr_area',
-            'dpr_shot_type',
-            'dpr_acq_type',
+            'dpr_remarks',
         ],
     ]) ?>
 

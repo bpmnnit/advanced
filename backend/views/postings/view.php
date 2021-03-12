@@ -45,6 +45,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'posting_on',
+            'posting_years', 
+            'posting_days', 
+            'posting_totaldays', 
         ],
     ]) ?>
 

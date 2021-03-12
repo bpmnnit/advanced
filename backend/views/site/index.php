@@ -3,6 +3,8 @@
 /* @var $this yii\web\View */
 
 $this->title = 'My Yii Application';
+
+$version = Yii::getVersion();
 ?>
 <div class="site-index">
 

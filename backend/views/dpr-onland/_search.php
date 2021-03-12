@@ -28,6 +28,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'dpr_shots_rej') ?>
 
+    <?= $form->field($model, 'dpr_remarks') ?>
+
     <?php // echo $form->field($model, 'dpr_shots_skip') ?>
 
     <?php // echo $form->field($model, 'dpr_shots_rec') ?>

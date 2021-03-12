@@ -19,6 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Postings', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <p><strong>The data (especially the number of days and years for a posting) is updated as on 11 January, 2021.</strong></p>
+
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -55,6 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]),
             ],
+            'posting_years',
+            'posting_days',
+            'posting_totaldays',
+            
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

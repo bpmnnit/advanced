@@ -5,7 +5,9 @@ namespace backend\controllers;
 use Yii;
 use backend\models\DprOnland;
 use backend\models\DprOnlandSearch;
+use backend\models\Si;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -14,6 +16,9 @@ use yii\filters\VerbFilter;
  */
 class DprOnlandController extends Controller
 {
+
+    public $isUpdate = false;
+
     /**
      * {@inheritdoc}
      */
@@ -24,6 +29,16 @@ class DprOnlandController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                 ],
             ],
         ];
@@ -39,7 +54,8 @@ class DprOnlandController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $dataProvider->pagination->pageSize = 40;
-
+        $dataProvider->sort = ['defaultOrder' => ['dpr_date' => 'DESC']];
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -67,11 +83,12 @@ class DprOnlandController extends Controller
     public function actionCreate()
     {
         $model = new DprOnland();
-
-        if ($model->load(Yii::$app->request->post())) {
-
-            $model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $model->dpr_conv_factor,4, '.','');
-            $model->save();
+        $this->isUpdate = false;
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            // $conversion_factor = Si::find()->select('si_conversion_factor')->where(['si_id' => $model->dpr_si])->one()->si_conversion_factor;
+            // $model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $conversion_factor,4, '.','');
+            // $model->save();
+            
             return $this->redirect(['view', 'id' => $model->dpr_id]);
         }
 
@@ -90,8 +107,12 @@ class DprOnlandController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $this->isUpdate = true;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //$conversion_factor = Si::find()->select('si_conversion_factor')->where(['si_id' => $model->dpr_si])->one()->si_conversion_factor;
+            //$model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $conversion_factor,4, '.','');
+            //$model->save();
+            
             return $this->redirect(['view', 'id' => $model->dpr_id]);
         }
 
@@ -114,6 +135,60 @@ class DprOnlandController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionMaxsigdate() {
+        $sig_id = $_POST['sig_id'];
+        $ret = self::getSigMaxDate($sig_id);
+        print_r($ret[0]['max_date']);
+        //return $ret;
+    }
+
+    public function getSigMaxDate($sig_id) {
+      $connection = Yii::$app->getDb();
+      $command = $connection->createCommand("SELECT max(dpr_date) as max_date FROM cgsdb.dpr_onland where dpr_onland.dpr_si = $sig_id");
+      $result = $command->queryAll();
+      return $result;
+    }
+
+    public function actionSig() {
+      Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      $out = [];
+      if (isset($_POST['depdrop_parents'])) {
+        $parents = $_POST['depdrop_parents'];
+        if ($parents != null) {
+          $fp_id = $parents[0];
+          $out = self::getSigList($fp_id);
+          return ['output'=>$out, 'selected'=>''];
+        }
+      }
+      return ['output'=>'', 'selected'=>''];
+    }
+
+    public function actionSigcf() {
+      $sig_id = $_POST['sig_id'];
+      $ret = self::getSigconversionFactor($sig_id);
+      print_r($ret[0]['cf']);
+      //return $ret;
+    }
+
+    public function getSigconversionFactor($sig_id) {
+      $connection = Yii::$app->getDb();
+      $command = $connection->createCommand("SELECT si_conversion_factor AS cf FROM cgsdb.si WHERE si_id = $sig_id");
+      $result = $command->queryAll();
+      return $result;
+    }
+    
+    public function getSigList($fp_id) {
+      $connection = Yii::$app->getDb();
+      $command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas FROM cgsdb.si where si.si_fp = (select field_parties.field_party_id from field_parties where field_parties.field_party_id = $fp_id)");
+      // $command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas, MAX(dpr_date) AS max_dt FROM cgsdb.si INNER JOIN dpr_onland ON si.si_fp = dpr_onland.dpr_field_party where si.si_fp = (select field_parties.field_party_id from field_parties where field_parties.field_party_id = $fp_id) GROUP BY si_id ORDER BY max_dt DESC");
+      $result = $command->queryAll();
+      $arr = array();
+      foreach ($result as $r) {
+        $arr[] = array('id' => $r['si_id'], 'name' => $r['areas']);  
+      }
+      return $arr;           
+    }
+
     /**
      * Finds the DprOnland model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -123,10 +198,10 @@ class DprOnlandController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = DprOnland::findOne($id)) !== null) {
-            return $model;
-        }
+      if (($model = DprOnland::findOne($id)) !== null) {
+        return $model;
+      }
 
-        throw new NotFoundHttpException('The requested page does not exist.');
+      throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

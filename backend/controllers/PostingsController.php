@@ -8,6 +8,7 @@ use backend\models\PostingsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * PostingsController implements the CRUD actions for Postings model.
@@ -26,6 +27,16 @@ class PostingsController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+              'class' => AccessControl::className(),
+              'only' => ['index', 'view', 'create', 'update', 'delete'],
+              'rules' => [
+                  [
+                      'allow' => true,
+                      'roles' => ['@'],
+                  ],
+              ],
+          ],
         ];
     }
 

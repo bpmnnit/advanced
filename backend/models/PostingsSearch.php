@@ -19,7 +19,7 @@ class PostingsSearch extends Postings
     public function rules()
     {
         return [
-            [['posting_id'], 'integer'],
+            [['posting_id', 'posting_years', 'posting_days', 'posting_totaldays'], 'integer'],
             [['posting_at', 'posting_cpf', 'posting_on', 'posting_region'], 'safe'],
         ];
     }
@@ -48,6 +48,9 @@ class PostingsSearch extends Postings
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+              'pageSize' => 35,
+          ],
         ]);
 
         $this->load($params);
@@ -65,6 +68,9 @@ class PostingsSearch extends Postings
         $query->andFilterWhere([
             'posting_id' => $this->posting_id,
             'posting_on' => $this->posting_on,
+            'posting_years' => $this->posting_years, 
+            'posting_days' => $this->posting_days, 
+            'posting_totaldays' => $this->posting_totaldays, 
         ]);
 
         $query->andFilterWhere(['like', 'posting_at', $this->posting_at])

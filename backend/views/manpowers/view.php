@@ -16,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?= Html::a('Create Manpowers', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::a('Update', ['update', 'id' => $model->manpower_cpf], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->manpower_cpf], [
             'class' => 'btn btn-danger',
@@ -37,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'manpower_level',
             'manpower_discipline',
             'manpower_designation',
+            'manpower_crc',
         ],
     ]) ?>
 

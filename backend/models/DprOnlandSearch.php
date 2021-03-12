@@ -17,9 +17,9 @@ class DprOnlandSearch extends DprOnland
     public function rules()
     {
         return [
-            [['dpr_id', 'dpr_shots_acc', 'dpr_shots_rej', 'dpr_shots_skip', 'dpr_shots_rec', 'dpr_shots_rep'], 'integer'],
-            [['dpr_date', 'dpr_area', 'dpr_shot_type', 'dpr_acq_type', 'dpr_field_party'], 'safe'],
-            [['dpr_conv_factor', 'dpr_coverage'], 'number'],
+            [['dpr_id', 'dpr_shots_acc', 'dpr_shots_rej', 'dpr_shots_skip', 'dpr_shots_rec', 'dpr_shots_rep', 'dpr_coverage_shots'], 'integer'],
+            [['dpr_date', 'dpr_remarks', 'dpr_field_party', 'dpr_si'], 'safe'],
+            [['dpr_coverage'], 'number'],
         ];
     }
 
@@ -58,6 +58,7 @@ class DprOnlandSearch extends DprOnland
         }
 
         $query->joinWith('dprFieldParty');
+        $query->joinWith('dprSi');
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -68,14 +69,14 @@ class DprOnlandSearch extends DprOnland
             'dpr_shots_skip' => $this->dpr_shots_skip,
             'dpr_shots_rec' => $this->dpr_shots_rec,
             'dpr_shots_rep' => $this->dpr_shots_rep,
-            'dpr_conv_factor' => $this->dpr_conv_factor,
+            'dpr_coverage_shots' => $this->dpr_coverage_shots,
             'dpr_coverage' => $this->dpr_coverage,
+            'dpr_remarks' => $this->dpr_remarks,
         ]);
 
-        $query->andFilterWhere(['like', 'dpr_area', $this->dpr_area])
-            ->andFilterWhere(['like', 'dpr_shot_type', $this->dpr_shot_type])
-            ->andFilterWhere(['like', 'dpr_acq_type', $this->dpr_acq_type])
-            ->andFilterWhere(['like', 'field_parties.field_party_name', $this->dpr_field_party]);
+        $query->andFilterWhere(['like', 'field_parties.field_party_name', $this->dpr_field_party])
+          ->andFilterWhere(['like', 'si.si_no', $this->dpr_si])
+          ->orFilterWhere(['like', 'si.si_area', $this->dpr_si]);
 
         return $dataProvider;
     }

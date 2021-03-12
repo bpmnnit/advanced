@@ -12,6 +12,9 @@ use Yii;
  * @property int $posting_region
  * @property string $posting_at
  * @property string $posting_on
+ * @property int|null $posting_years
+ * @property int|null $posting_days
+ * @property int|null $posting_totaldays
  *
  * @property Manpowers $postingCpf
  * @property Regions $postingRegion
@@ -33,7 +36,7 @@ class Postings extends \yii\db\ActiveRecord
     {
         return [
             [['posting_cpf', 'posting_region', 'posting_at', 'posting_on'], 'required'],
-            [['posting_cpf', 'posting_region'], 'integer'],
+            [['posting_cpf', 'posting_region', 'posting_years', 'posting_days', 'posting_totaldays'], 'integer'],
             [['posting_at'], 'string'],
             [['posting_on'], 'safe'],
             [['posting_cpf'], 'exist', 'skipOnError' => true, 'targetClass' => Manpowers::className(), 'targetAttribute' => ['posting_cpf' => 'manpower_cpf']],
@@ -52,6 +55,9 @@ class Postings extends \yii\db\ActiveRecord
             'posting_at' => 'Posted At',
             'posting_region' => 'Region',
             'posting_on' => 'Posting Date',
+            'posting_years' => 'Years',
+           'posting_days' => 'Days',
+           'posting_totaldays' => 'Totaldays',
         ];
     }
 

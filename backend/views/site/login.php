@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Login';
+$this->title = 'Login | GPS';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
@@ -27,7 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="form-group">
                     <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::a('Sign Up', "http://10.208.133.53/advanced/frontend/web/index.php?r=site/signup", ['class' => 'btn btn-primary']); ?>
                 </div>
+
+                <div class="form-group">
+                  
+                </div>
+
+                <!-- <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?> -->
 
             <?php ActiveForm::end(); ?>
         </div>

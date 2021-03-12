@@ -18,7 +18,7 @@ class ManpowersSearch extends Manpowers
     {
         return [
             [['manpower_cpf'], 'integer'],
-            [['manpower_name', 'manpower_charge', 'manpower_mobile_number', 'manpower_create_date', 'manpower_level', 'manpower_discipline', 'manpower_designation'], 'safe'],
+            [['manpower_name', 'manpower_charge', 'manpower_mobile_number', 'manpower_create_date', 'manpower_level', 'manpower_discipline', 'manpower_designation', 'manpower_crc'], 'safe'],
         ];
     }
 
@@ -51,23 +51,24 @@ class ManpowersSearch extends Manpowers
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
-            return $dataProvider;
+          // uncomment the following line if you do not want to return any records when validation fails
+          // $query->where('0=1');
+          return $dataProvider;
         }
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'manpower_cpf' => $this->manpower_cpf,
-            'manpower_create_date' => $this->manpower_create_date,
+          'manpower_cpf' => $this->manpower_cpf,
+          'manpower_create_date' => $this->manpower_create_date,
         ]);
 
         $query->andFilterWhere(['like', 'manpower_name', $this->manpower_name])
-            ->andFilterWhere(['like', 'manpower_charge', $this->manpower_charge])
-            ->andFilterWhere(['like', 'manpower_mobile_number', $this->manpower_mobile_number])
-            ->andFilterWhere(['like', 'manpower_level', $this->manpower_level])
-            ->andFilterWhere(['like', 'manpower_discipline', $this->manpower_discipline])
-            ->andFilterWhere(['like', 'manpower_designation', $this->manpower_designation]);
+          ->andFilterWhere(['like', 'manpower_charge', $this->manpower_charge])
+          ->andFilterWhere(['like', 'manpower_mobile_number', $this->manpower_mobile_number])
+          ->andFilterWhere(['like', 'manpower_level', $this->manpower_level])
+          ->andFilterWhere(['like', 'manpower_discipline', $this->manpower_discipline])
+          ->andFilterWhere(['like', 'manpower_designation', $this->manpower_designation])
+          ->andFilterWhere(['like', 'manpower_crc', $this->manpower_crc]);
 
         return $dataProvider;
     }

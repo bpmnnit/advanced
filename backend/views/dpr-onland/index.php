@@ -4,6 +4,10 @@ use dosamigos\datepicker\DatePicker;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use kartik\select2\Select2;
+use yii\helpers\ArrayHelper;
+use backend\models\FieldParties;
+use backend\models\Si;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\DprOnlandSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -22,50 +26,172 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <?php
+      //$areaList = ArrayHelper::map(Si::find()->all(), 'si_area', 'si_id');
+    ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            ['class' => 'yii\grid\SerialColumn', 'contentOptions' => ['class' => 'text-right', 'style' => 'width: 20px;'],],
             [
-                'attribute' => 'dpr_date',
-                'value' => 'dpr_date',
-                'format' => 'raw',
-                'filter' => DatePicker::widget([
-                    'model' => $searchModel,
-                    'attribute' => 'dpr_date',
-                    'clientOptions' => [
-                        'autoclose' => true,
-                        'format' => 'yyyy-mm-dd',
-                    ],
-                ]),
+              'attribute' => 'dpr_date',
+              'value' => 'dpr_date',
+              'format' => 'raw',
+              'filter' => DatePicker::widget([
+                  'model' => $searchModel,
+                  'attribute' => 'dpr_date',
+                  'clientOptions' => [
+                      'autoclose' => true,
+                      'format' => 'yyyy-mm-dd',
+                      'todayHighlight' => true,
+                  ],
+              ]),
+              'headerOptions' => ['class' => 'text-right'],
+              'contentOptions' => ['class' => 'text-right', 'style' => 'width: 60px;'],
             ],
             [
                 'attribute' => 'dpr_field_party',
                 'format' => 'html',
                 'value' => function($model) {
                     return Html::a($model->dprFieldParty->field_party_name, ['field-parties/view', 'id' => $model->dpr_field_party], ['data-pjax' => '0']);
-                }
+                },
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 160px;'],
+                'filterInputOptions' => [
+                  'class'       => 'form-control',
+                  'placeholder' => 'FP Name...'
+                ]
+                // 'filter' => Select2::widget(
+                //   [
+                //     'model' => $searchModel,
+                //     'attribute' => 'dpr_field_party',
+                //     'data' => Arrayhelper::map(FieldParties::find()->all(), 'field_party_id', 'field_party_name'),
+                //     'options' => ['placeholder' => 'Filter by Field Party...'],
+                //     'language' => 'en',
+                //     'pluginOptions' => [
+                //       'allowClear' => true,
+                //     ],
+                //   ],
+                // ),
             ],
-            'dpr_shots_acc',
-            'dpr_shots_rej',
-            'dpr_shots_skip',
-            'dpr_shots_rep',
-            'dpr_shots_rec',
+            //'dpr_si',
             [
-                'attribute' => 'dpr_conv_factor',
-                //'contentOptions' => ['class' => 'col-lg-1'],
-                'format' => ['decimal', 4],
+                'attribute' => 'dpr_si',
+                'format' => 'html',
+                'label' => 'Area',
+                'value' => function($model) {
+                    return Html::a($model->dprSi->si_area, ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
+                },
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 250px;'],
+                'filter' => '',
             ],
+            [
+                'attribute' => 'dpr_si',
+                'format' => 'html',
+                'label' => 'SIG',
+                'value' => function($model) {
+                    return Html::a($model->dprSi->si_no, ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
+                },
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 200px;'],
+                'filterInputOptions' => [
+                  'class'       => 'form-control',
+                  'placeholder' => 'SI Area or SI No...'
+                ]
+                // 'filter' => Select2::widget(
+                //   [
+                //     'model' => $searchModel,
+                //     'attribute' => 'dpr_si',
+                //     'data' => Arrayhelper::map(Si::find()->all(), 'si_id', 'si_no'),
+                //     'options' => ['placeholder' => 'Filter by SI...'],
+                //     'language' => 'en',
+                //     'pluginOptions' => [
+                //       'allowClear' => true,
+                //     ],
+                //   ],
+                // ),
+            ],
+            [
+                'attribute' => 'dpr_shots_acc',
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 30px;'],
+                'filterInputOptions' => [
+                  'class'       => 'form-control',
+                  'placeholder' => 'Acc...'
+                ]
+            ],
+            [
+                'attribute' => 'dpr_shots_rej',
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 30px;'],
+                'filterInputOptions' => [
+                  'class'       => 'form-control',
+                  'placeholder' => 'Rej...'
+                ]
+            ],
+            [
+                'attribute' => 'dpr_shots_skip',
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 30px;'],
+                'filterInputOptions' => [
+                  'class'       => 'form-control',
+                  'placeholder' => 'Skip...'
+                ]
+            ],
+            [
+                'attribute' => 'dpr_shots_rep',
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 30px;'],
+                'filterInputOptions' => [
+                  'class'       => 'form-control',
+                  'placeholder' => 'Rep...'
+                ]
+            ],
+            [
+                'attribute' => 'dpr_shots_rec',
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 30px;'],
+                'filterInputOptions' => [
+                  'class'       => 'form-control',
+                  'placeholder' => 'Rec...'
+                ]
+            ],
+            [
+              'attribute' => 'dpr_coverage_shots',
+              'headerOptions' => ['class' => 'text-right'],
+              'contentOptions' => ['class' => 'text-right', 'style' => 'width: 30px;'],
+              'filterInputOptions' => [
+                'class'       => 'form-control',
+                'placeholder' => 'Coverage Shots...'
+              ]
+          ],
             [
                 'attribute' => 'dpr_coverage',
                 //'contentOptions' => ['class' => 'col-lg-1'],
                 'format' => ['decimal', 4],
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 60px;'],
+                'filterInputOptions' => [
+                  'class'       => 'form-control',
+                  'placeholder' => 'Coverage...'
+                ]
             ],
-            'dpr_area',
-            'dpr_shot_type',
-            'dpr_acq_type',
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+              'attribute' => 'dpr_remarks',
+              'filterInputOptions' => [
+                'class'       => 'form-control',
+                'placeholder' => 'Remarks...'
+              ],
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header' => 'Actions',
+                'headerOptions' => ['class' => 'text-center'],
+                'contentOptions' => ['class' => 'text-center'],
+            ],
         ],
     ]); ?>
 

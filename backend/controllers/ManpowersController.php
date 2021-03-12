@@ -8,6 +8,7 @@ use backend\models\ManpowersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * ManpowersController implements the CRUD actions for Manpowers model.
@@ -26,6 +27,16 @@ class ManpowersController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+              'class' => AccessControl::className(),
+              'only' => ['index', 'view', 'create', 'update', 'delete'],
+              'rules' => [
+                  [
+                      'allow' => true,
+                      'roles' => ['@'],
+                  ],
+              ],
+          ],
         ];
     }
 

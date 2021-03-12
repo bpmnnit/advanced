@@ -10,12 +10,13 @@ use yii\validators\InlineValidator;
  *
  * @property int $manpower_cpf
  * @property string $manpower_name
- * @property string $manpower_designation
- * @property string $manpower_charge
- * @property string $manpower_mobile_number
+ * @property string|null $manpower_designation
+ * @property string|null $manpower_charge
+ * @property string|null $manpower_mobile_number
  * @property string $manpower_create_date
- *
+ * @property string|null $manpower_crc
  * @property Postings[] $postings
+ * 
  */
 class Manpowers extends \yii\db\ActiveRecord
 {
@@ -42,9 +43,9 @@ class Manpowers extends \yii\db\ActiveRecord
             [['manpower_cpf', 'manpower_name', 'manpower_create_date'], 'required'],
             [['manpower_cpf'], 'integer'],
             [['manpower_create_date'], 'safe'],
-            [['manpower_level', 'manpower_discipline', 'manpower_designation'], 'string'],
+            [['manpower_level', 'manpower_discipline', 'manpower_designation', 'manpower_crc'], 'string'],
             [['manpower_name'], 'string', 'max' => 64],
-            [['manpower_charge'], 'string', 'max' => 32],
+            [['manpower_charge'], 'string', 'max' => 1024],
             [['manpower_mobile_number'], 'checkMobileNumber', 'skipOnEmpty' => true, 'skipOnError' => false],
             [['manpower_cpf'], 'unique'],
         ];
@@ -65,6 +66,7 @@ class Manpowers extends \yii\db\ActiveRecord
             'manpower_level' => 'Level',
             'manpower_discipline' => 'Discipline',
             'manpower_designation' => 'Designation',
+            'manpower_crc' => 'CRC',
         ];
     }
 

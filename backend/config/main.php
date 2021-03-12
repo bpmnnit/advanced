@@ -8,13 +8,18 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
-    'basePath' => dirname(__DIR__),
+    'name' => 'Geophysical Services DPR', // changing the name of the brand
+    'basePath' => dirname(__DIR__), 
+    'homeUrl' => array('dpr-onland/index'), // changing the homeurl on brand
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -41,14 +46,14 @@ return [
             'class' => 'yii\rbac\DbManager',
             'defaultRoles' => ['guest'],
         ],
-        /*
         'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
+            //'enablePrettyUrl' => true,
+            //'enableStrictParsing' => true,
+            //'showScriptName' => false,
             'rules' => [
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'GsApi'],
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

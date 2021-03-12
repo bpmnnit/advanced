@@ -1,5 +1,6 @@
 <?php
 
+use dosamigos\highcharts\HighCharts;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
