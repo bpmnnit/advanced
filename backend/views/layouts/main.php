@@ -83,11 +83,11 @@ AppAsset::register($this);
 </div>
 
 <footer class="footer">
-    <!-- <div class="container"> -->
+    <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
 
         <p class="pull-right">Developed &amp; maintained by CGS Office, Mumbai.</p>
-    <!-- </div> -->
+    </div>
 </footer>
 
 <?php $this->endBody() ?>

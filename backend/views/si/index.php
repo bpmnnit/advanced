@@ -28,11 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            // [
-            //     'attribute' => 'si_id',
-            //     'headerOptions' => ['class' => 'text-right'],
-            //     'contentOptions' => ['class' => 'text-right .', 'style' => 'width: 30px;'],
-            // ],
+            [
+                'attribute' => 'si_id',
+                'headerOptions' => ['class' => 'text-right'],
+                'contentOptions' => ['class' => 'text-right .', 'style' => 'width: 30px;'],
+            ],
             [
               'attribute' => 'si_no',
               'contentOptions' => ['class' => 'text-left', 'style' => 'width: 80px;'],

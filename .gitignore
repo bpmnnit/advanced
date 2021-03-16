@@ -6,6 +6,12 @@
 # phpstorm project files
 .idea
 
+# ignoring .vscode folder, which is meant for debugging
+.vscode
+
+# ignore .gitignore
+.gitignore
+
 # netbeans project files
 nbproject
 

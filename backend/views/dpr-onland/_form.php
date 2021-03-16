@@ -22,24 +22,34 @@ use scotthuangzl\googlechart\GoogleChart;
 
             <?php $form = ActiveForm::begin(); ?>
 
-            <?= $form->field($model, 'dpr_field_party')->dropDownList(
+            <!-- <?= $form->field($model, 'dpr_field_party')->dropDownList(
                 ArrayHelper::map(FieldParties::find()->orderBy('field_party_name')->all(), 'field_party_id', 'field_party_name'), ['prompt' => 'Select Field Party ...', 'id' => 'fp-id'],
-            ); ?>
+            ); ?> -->
 
-            <?= (!$this->context->isUpdate) ?
-              $form->field($model, 'dpr_si')->widget(DepDrop::classname(), [
+            <?= $form->field($model, 'dpr_field_party')->widget(Select2::classname(), [
+              'data' => ArrayHelper::map(FieldParties::find()->orderBy('field_party_name')->all(), 'field_party_id', 'field_party_name'),
+              'language' => 'de',
+              'options' => ['placeholder' => 'Select Field Party ...', 'id' => 'fp-id'],
+              'pluginOptions' => [
+                'allowClear' => true
+              ],
+            ]); ?>
+
+            <?= $form->field($model, 'dpr_si')->widget(DepDrop::classname(), [
               'options' => [
                 'id' => 'sig-id',
                 'onchange' => 'getmaxsig("'.Yii::$app->urlManager->createUrl(['dpr-onland/maxsigdate']).'");',
               ],
+              'type' => DepDrop::TYPE_SELECT2, // OR 1 for normal select, 2 for select2
               'pluginOptions' => [
                 'depends' => ['fp-id'],
+                'initDepends' => ['fp-id'],
                 'placeholder' => 'Select SIG...',
+                'loading' => true,
+                'initialize' => true,
                 'url' => Url::to(['dpr-onland/sig']),
               ],
-            ]) : $form->field($model, 'dpr_si')->dropDownList(
-              ArrayHelper::map(Si::find()->where(['si_fp' => $model->dpr_field_party])->all(), 'si_id', 'si_area'), ['prompt' => 'Select SI...'],
-            ); ?>
+            ]); ?>
 
             <?= $form->field($model, 'dpr_date')->widget(
                 DatePicker::className(), [

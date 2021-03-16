@@ -16,32 +16,44 @@ use yii\filters\VerbFilter;
  */
 class DprOnlandController extends Controller
 {
-
     public $isUpdate = false;
+    private $modelSig = null;
+
+    public function beforeAction($action) {
+      if(Yii::$app->session->has('modelSig')) {
+        $this->modelSig = Yii::$app->session['modelSig'];
+      }
+      return parent::beforeAction($action);
+    }
+
+    public function afterAction($action,$params) {
+        Yii::$app->session['modelSig'] = $this->modelSig;
+        return parent::afterAction($action,$params);
+    }
 
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+      return [
+        'verbs' => [
+          'class' => VerbFilter::className(),
+          'actions' => [
+            'delete' => ['POST'],
+          ],
+        ],
+        'access' => [
+          'class' => AccessControl::className(),
+          'only' => ['index', 'view', 'create', 'update', 'delete'],
+          'rules' => [
+            [
+              'allow' => true,
+              'roles' => ['@'],
             ],
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
+          ],
+        ],
+      ];
     }
 
     /**
@@ -70,9 +82,9 @@ class DprOnlandController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+      return $this->render('view', [
+        'model' => $this->findModel($id),
+      ]);
     }
 
     /**
@@ -82,19 +94,19 @@ class DprOnlandController extends Controller
      */
     public function actionCreate()
     {
-        $model = new DprOnland();
-        $this->isUpdate = false;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // $conversion_factor = Si::find()->select('si_conversion_factor')->where(['si_id' => $model->dpr_si])->one()->si_conversion_factor;
-            // $model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $conversion_factor,4, '.','');
-            // $model->save();
-            
-            return $this->redirect(['view', 'id' => $model->dpr_id]);
-        }
+      $model = new DprOnland();
+      $this->isUpdate = false;
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        // $conversion_factor = Si::find()->select('si_conversion_factor')->where(['si_id' => $model->dpr_si])->one()->si_conversion_factor;
+        // $model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $conversion_factor,4, '.','');
+        // $model->save();
+        
+        return $this->redirect(['view', 'id' => $model->dpr_id]);
+      }
 
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+      return $this->render('create', [
+        'model' => $model,
+      ]);
     }
 
     /**
@@ -106,19 +118,21 @@ class DprOnlandController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-        $this->isUpdate = true;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //$conversion_factor = Si::find()->select('si_conversion_factor')->where(['si_id' => $model->dpr_si])->one()->si_conversion_factor;
-            //$model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $conversion_factor,4, '.','');
-            //$model->save();
-            
-            return $this->redirect(['view', 'id' => $model->dpr_id]);
-        }
+      $model = $this->findModel($id);
+      $this->isUpdate = true;
+      $this->modelSig = $model->dpr_si;
+      Yii::$app->session->set('modelSig', $this->modelSig);
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+          //$conversion_factor = Si::find()->select('si_conversion_factor')->where(['si_id' => $model->dpr_si])->one()->si_conversion_factor;
+          //$model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $conversion_factor,4, '.','');
+          //$model->save();
+          
+          return $this->redirect(['view', 'id' => $model->dpr_id]);
+      }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+      return $this->render('update', [
+          'model' => $model,
+      ]);
     }
 
     /**
@@ -157,10 +171,11 @@ class DprOnlandController extends Controller
         if ($parents != null) {
           $fp_id = $parents[0];
           $out = self::getSigList($fp_id);
-          return ['output'=>$out, 'selected'=>''];
+          $selected = self::getModelSig();
+          return ['output' => $out, 'selected' => Yii::$app->session->get('modelSig')];
         }
       }
-      return ['output'=>'', 'selected'=>''];
+      return ['output' => '', 'selected' => '69'];
     }
 
     public function actionSigcf() {
@@ -176,9 +191,14 @@ class DprOnlandController extends Controller
       $result = $command->queryAll();
       return $result;
     }
+
+    public function getModelSig() {
+      return $this->modelSig;
+    }
     
     public function getSigList($fp_id) {
       $connection = Yii::$app->getDb();
+      //$command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas FROM cgsdb.si where si.si_fp = $fp_id)");
       $command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas FROM cgsdb.si where si.si_fp = (select field_parties.field_party_id from field_parties where field_parties.field_party_id = $fp_id)");
       // $command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas, MAX(dpr_date) AS max_dt FROM cgsdb.si INNER JOIN dpr_onland ON si.si_fp = dpr_onland.dpr_field_party where si.si_fp = (select field_parties.field_party_id from field_parties where field_parties.field_party_id = $fp_id) GROUP BY si_id ORDER BY max_dt DESC");
       $result = $command->queryAll();

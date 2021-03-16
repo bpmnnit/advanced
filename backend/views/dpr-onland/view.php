@@ -51,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'dpr_shots_skip',
             'dpr_shots_rep',
             'dpr_shots_rec',
+            'dpr_coverage_shots',
             [
                 'attribute' => 'dpr_coverage',
                 //'contentOptions' => ['class' => 'col-lg-1'],
