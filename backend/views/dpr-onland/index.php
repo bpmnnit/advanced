@@ -8,6 +8,7 @@ use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use backend\models\FieldParties;
 use backend\models\Si;
+use backend\models\Regions;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\DprOnlandSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -76,44 +77,105 @@ $this->params['breadcrumbs'][] = $this->title;
                 //   ],
                 // ),
             ],
-            //'dpr_si',
             [
-                'attribute' => 'dpr_si',
-                'format' => 'html',
-                'label' => 'Area',
-                'value' => function($model) {
-                    return Html::a($model->dprSi->si_area, ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
-                },
-                'headerOptions' => ['class' => 'text-right'],
-                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 250px;'],
-                'filter' => '',
+              'attribute' => 'dprRegionName',
+              'format' => 'html',
+              'label' => 'Region',
+              'value' => function($model) {
+                return Html::a($model->dprRegionName, ['regions/view', 'id' => $model->dprSi->si_region], ['data-pjax' => '0']);
+              },
+              'headerOptions' => ['class' => 'text-right'],
+              'contentOptions' => ['class' => 'text-right'],
+              'filterInputOptions' => [
+                'class' => 'form-control',
+                'placeholder' => 'Region...',
+              ],
             ],
             [
-                'attribute' => 'dpr_si',
-                'format' => 'html',
-                'label' => 'SIG',
-                'value' => function($model) {
-                    return Html::a($model->dprSi->si_no, ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
-                },
-                'headerOptions' => ['class' => 'text-right'],
-                'contentOptions' => ['class' => 'text-right', 'style' => 'width: 200px;'],
-                'filterInputOptions' => [
-                  'class'       => 'form-control',
-                  'placeholder' => 'SI Area or SI No...'
-                ]
-                // 'filter' => Select2::widget(
-                //   [
-                //     'model' => $searchModel,
-                //     'attribute' => 'dpr_si',
-                //     'data' => Arrayhelper::map(Si::find()->all(), 'si_id', 'si_no'),
-                //     'options' => ['placeholder' => 'Filter by SI...'],
-                //     'language' => 'en',
-                //     'pluginOptions' => [
-                //       'allowClear' => true,
-                //     ],
-                //   ],
-                // ),
+              'attribute' => 'dprArea',
+              'format' => 'html',
+              'label' => 'Area',
+              'value' => function($model) {
+                return Html::a($model->dprArea, ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
+              },
+              'headerOptions' => ['class' => 'text-right'],
+              'contentOptions' => ['class' => 'text-right'],
+              'filterInputOptions' => [
+                'class' => 'form-control',
+                'placeholder' => 'Area...',
+              ],
             ],
+            [
+              'attribute' => 'dprSiNo',
+              'format' => 'html',
+              'label' => 'SI No.',
+              'value' => function($model) {
+                return Html::a($model->dprSi->si_no, ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
+              },
+              'headerOptions' => ['class' => 'text-right'],
+              'contentOptions' => ['class' => 'text-right'],
+              'filterInputOptions' => [
+                'class' => 'form-control',
+                'placeholder' => 'SI No...',
+              ],
+            ],
+            // [
+            //   'attribute' => 'region',
+            //   'value' => 'dprSi.siRegion.region_name',
+            // ],
+            // [
+            //   'attribute' => 'region',
+            //   'format' => 'html',
+            //   'label' => 'Region',
+            //   'value' => function($model) {
+            //       return Html::a(Regions::findOne($model->dprSi->si_region)->region_name, ['regions/view', 'id' => Regions::findOne($model->dprSi->si_region)->region_id], ['data-pjax' => '0']);
+            //   },
+            //   'headerOptions' => ['class' => 'text-right'],
+            //   'contentOptions' => ['class' => 'text-right', 'style' => 'width: 250px;'],
+            //   'filter' => '',
+            // ],
+            // [
+            //   'attribute' => 'area',
+            //   'label' => 'Area',
+            //   'value' => 'dprSi.area',
+            // ],
+            // [
+            //     'attribute' => 'dpr_si',
+            //     'format' => 'html',
+            //     'label' => 'Area',
+            //     'value' => function($model) {
+            //         return Html::a($model->dprSi->si_area, ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
+            //     },
+            //     'headerOptions' => ['class' => 'text-right'],
+            //     'contentOptions' => ['class' => 'text-right', 'style' => 'width: 250px;'],
+            //     'filter' => '',
+            // ],
+            // [
+            //     'attribute' => 'dpr_si',
+            //     'format' => 'html',
+            //     'label' => 'SIG',
+            //     'value' => function($model) {
+            //         return Html::a($model->dprSi->si_no, ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
+            //     },
+            //     'headerOptions' => ['class' => 'text-right'],
+            //     'contentOptions' => ['class' => 'text-right', 'style' => 'width: 200px;'],
+            //     'filterInputOptions' => [
+            //       'class'       => 'form-control',
+            //       'placeholder' => 'SI Region/Area/No...'
+            //     ]
+            //     // 'filter' => Select2::widget(
+            //     //   [
+            //     //     'model' => $searchModel,
+            //     //     'attribute' => 'dpr_si',
+            //     //     'data' => Arrayhelper::map(Si::find()->all(), 'si_id', 'si_no'),
+            //     //     'options' => ['placeholder' => 'Filter by SI...'],
+            //     //     'language' => 'en',
+            //     //     'pluginOptions' => [
+            //     //       'allowClear' => true,
+            //     //     ],
+            //     //   ],
+            //     // ),
+            // ],
             [
                 'attribute' => 'dpr_shots_acc',
                 'headerOptions' => ['class' => 'text-right'],

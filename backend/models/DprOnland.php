@@ -5,6 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use backend\models\Si;
+use backend\models\Regions;
 /**
  * This is the model class for table "dpr_onland".
  *
@@ -57,7 +58,7 @@ class DprOnland extends \yii\db\ActiveRecord
     {
         return [
             'dpr_id' => 'ID',
-            'dpr_si' => 'Seismic Investigation',
+            // 'dpr_si' => 'SI',
             'dpr_date' => 'Date',
             'dpr_field_party' => 'Field Party',
             'dpr_shots_acc' => 'Acc',
@@ -68,23 +69,45 @@ class DprOnland extends \yii\db\ActiveRecord
             'dpr_coverage_shots' => 'Coverage Shots',
             'dpr_coverage' => 'Coverage',
             'dpr_remarks' => 'Remarks',
+            'dprArea' => 'Area',
+            'dprSiNo' => 'SI No.',
+            'dprRegionName' => 'Region',
+            'dprRegionId' => 'Region ID',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDprFieldParty()
-    {
-        return $this->hasOne(FieldParties::className(), ['field_party_id' => 'dpr_field_party']);
+    public function getDprFieldParty() {
+      return $this->hasOne(FieldParties::className(), ['field_party_id' => 'dpr_field_party']);
     }
 
     /**
     * @return \yii\db\ActiveQuery
     */
-    public function getDprSi()
-    {
-       return $this->hasOne(Si::className(), ['si_id' => 'dpr_si']);
+    public function getDprSi() {
+      return $this->hasOne(Si::className(), ['si_id' => 'dpr_si']);
+    }
+
+    /* Getter for DPR Area */
+    public function getDprArea() {
+      return $this->dprSi->si_area;
+    }
+
+    /* Getter for DPR SI NO */
+    public function getDprSiNo() {
+      return $this->dprSi->si_no;
+    }
+
+    /* Getter for DPR Region Name */
+    public function getDprRegionName() {
+      return Regions::findOne($this->dprSi->si_region)->region_name;
+    }
+
+    /* Getter for DPR Region ID */
+    public function getDprRegionId() {
+      return Regions::findOne($this->dprSi->si_region)->region_id;
     }
 
     /**

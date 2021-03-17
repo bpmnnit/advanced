@@ -199,7 +199,7 @@ class DprOnlandController extends Controller
     public function getSigList($fp_id) {
       $connection = Yii::$app->getDb();
       //$command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas FROM cgsdb.si where si.si_fp = $fp_id)");
-      $command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas FROM cgsdb.si where si.si_fp = (select field_parties.field_party_id from field_parties where field_parties.field_party_id = $fp_id)");
+      $command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas FROM cgsdb.si where si.si_fp = (select field_parties.field_party_id from field_parties where field_parties.field_party_id = $fp_id) ORDER BY si_start_date DESC");
       // $command = $connection->createCommand("SELECT si_id, concat(si_area, '(', si_no, ')') as areas, MAX(dpr_date) AS max_dt FROM cgsdb.si INNER JOIN dpr_onland ON si.si_fp = dpr_onland.dpr_field_party where si.si_fp = (select field_parties.field_party_id from field_parties where field_parties.field_party_id = $fp_id) GROUP BY si_id ORDER BY max_dt DESC");
       $result = $command->queryAll();
       $arr = array();

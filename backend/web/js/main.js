@@ -35,7 +35,7 @@ function setCoverageOnInput(cf, acc, rej, skip, rep, rec) {
   $("#coverage").val(coverageFixed);
 }
 
-function setCoverageOnInputbyCoverageShots(cf, coverageShots) {
+function setCoverageOnInputByCoverageShots(cf, coverageShots) {
   var coverage = coverageShots * parseFloat(cf);
   var coverageFixed = parseFloat(coverage.toFixed(4));
   $("#coverage").val(coverageFixed);
@@ -50,7 +50,7 @@ $("#cov_shots").bind('keyup', function(evt) {
         url: '/advanced/backend/web/index.php?r=dpr-onland/sigcf',
         data: "sig_id=" + sig_id,
         success: function(cf) {
-        	setCoverageOnInputbyCoverageShots(cf, coverageShots);
+        	setCoverageOnInputByCoverageShots(cf, coverageShots);
         }
     });
 });
