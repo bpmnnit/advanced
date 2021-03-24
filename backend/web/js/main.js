@@ -13,14 +13,14 @@ function formatDate(date) {
 }
 
 function getmaxsig(url_action) {
-	var sig_id = document.getElementById("sig-id").value;
+  var sig_id = document.getElementById("sig-id").value;
 	$.ajax({
         type: "POST",
         url: url_action,
         data: "sig_id=" + sig_id,
         success: function(text) {
         	//alert(text);
-        	var d = new Date(text);
+          var d = new Date(text);
         	d.setDate(d.getDate() + 1);
         	document.getElementById('dpr_date').value = formatDate(d);
         }

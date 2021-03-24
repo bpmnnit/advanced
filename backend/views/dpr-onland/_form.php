@@ -38,7 +38,7 @@ use scotthuangzl\googlechart\GoogleChart;
             <?= $form->field($model, 'dpr_si')->widget(DepDrop::classname(), [
               'options' => [
                 'id' => 'sig-id',
-                'onchange' => 'getmaxsig("'.Yii::$app->urlManager->createUrl(['dpr-onland/maxsigdate']).'");',
+                'onchange' => (!$this->context->isUpdate) ? 'getmaxsig("'.Yii::$app->urlManager->createUrl(['dpr-onland/maxsigdate']).'");' : '',
               ],
               'type' => DepDrop::TYPE_SELECT2, // OR 1 for normal select, 2 for select2
               'pluginOptions' => [

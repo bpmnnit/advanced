@@ -98,6 +98,7 @@ class DprOnlandController extends Controller
       $model = new DprOnland();
       $this->isUpdate = false;
       if ($model->load(Yii::$app->request->post())) {
+
         $model->dpr_si_no = $model->dprSi->si_no;
         $model->dpr_area = $model->dprSi->si_area;
         $region_id = $model->dprSi->si_region;
@@ -178,11 +179,10 @@ class DprOnlandController extends Controller
         if ($parents != null) {
           $fp_id = $parents[0];
           $out = self::getSigList($fp_id);
-          $selected = self::getModelSig();
-          return ['output' => $out, 'selected' => Yii::$app->session->get('modelSig')];
+          return ['output' => $out, 'selected' => self::getUpdateStatus() ? Yii::$app->session->get('modelSig') : ''];
         }
       }
-      return ['output' => '', 'selected' => '69'];
+      return ['output' => '', 'selected' => ''];
     }
 
     public function actionSigcf() {
@@ -201,6 +201,10 @@ class DprOnlandController extends Controller
 
     public function getModelSig() {
       return $this->modelSig;
+    }
+
+    public function getUpdateStatus() {
+      return $this->isUpdate;
     }
     
     public function getSigList($fp_id) {
