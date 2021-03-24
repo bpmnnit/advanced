@@ -20,6 +20,9 @@ use backend\models\Regions;
  * @property int $dpr_shots_rec
  * @property double $dpr_coverage
  * @property string $dpr_remarks
+ * @property string $dpr_region
+ * @property string $dpr_area
+ * @property string $dpr_si_no
  *
  * @property FieldParties $dprFieldParty
  * @property Si $dprSi
@@ -45,7 +48,7 @@ class DprOnland extends \yii\db\ActiveRecord
             [['dpr_date'], 'safe'],
             [['dpr_date'], 'date', 'format' => 'php:Y-m-d', 'max' => date('Y-m-d'), 'message' => 'Cannot enter DPR for future date.'],
             [['dpr_coverage'], 'number'],
-            [['dpr_remarks'], 'string', 'max' => 128],
+            [['dpr_remarks', 'dpr_area', 'dpr_si_no', 'dpr_region'], 'string', 'max' => 128],
             [['dpr_field_party'], 'exist', 'skipOnError' => true, 'targetClass' => FieldParties::className(), 'targetAttribute' => ['dpr_field_party' => 'field_party_id']],
             [['dpr_si'], 'exist', 'skipOnError' => true, 'targetClass' => Si::className(), 'targetAttribute' => ['dpr_si' => 'si_id']],
         ];
@@ -58,7 +61,6 @@ class DprOnland extends \yii\db\ActiveRecord
     {
         return [
             'dpr_id' => 'ID',
-            // 'dpr_si' => 'SI',
             'dpr_date' => 'Date',
             'dpr_field_party' => 'Field Party',
             'dpr_shots_acc' => 'Acc',
@@ -69,10 +71,9 @@ class DprOnland extends \yii\db\ActiveRecord
             'dpr_coverage_shots' => 'Coverage Shots',
             'dpr_coverage' => 'Coverage',
             'dpr_remarks' => 'Remarks',
-            'dprArea' => 'Area',
-            'dprSiNo' => 'SI No.',
-            'dprRegionName' => 'Region',
-            'dprRegionId' => 'Region ID',
+            'dpr_area' => 'Area',
+            'dpr_si_no' => 'SI No.',
+            'dpr_region' => 'Region',
         ];
     }
 
@@ -88,39 +89,6 @@ class DprOnland extends \yii\db\ActiveRecord
     */
     public function getDprSi() {
       return $this->hasOne(Si::className(), ['si_id' => 'dpr_si']);
-    }
-
-    /* Getter for DPR Area */
-    public function getDprArea() {
-      return $this->dprSi->si_area;
-    }
-
-    /* Getter for DPR SI NO */
-    public function getDprSiNo() {
-      return $this->dprSi->si_no;
-    }
-
-    /* Getter for DPR Region Name */
-    public function getDprRegionName() {
-      return Regions::findOne($this->dprSi->si_region)->region_name;
-    }
-
-    /* Getter for DPR Region ID */
-    public function getDprRegionId() {
-      return Regions::findOne($this->dprSi->si_region)->region_id;
-    }
-
-    /**
-    * @return list
-    */
-    public function siAreaTogether() {
-      $list = [];
-      $sis = Si::find()->orderBy('si_no')->all();
-
-      $list = Arrayhelper::map($sis, 'si_id', function($si) {
-          return $si->si_no.' ('.$si->si_area.')'; 
-      });
-      return $list;
     }
 
     public function totalTargetAchievement($type, $year) {

@@ -6,6 +6,7 @@ use Yii;
 use backend\models\DprOnland;
 use backend\models\DprOnlandSearch;
 use backend\models\Si;
+use backend\models\Regions;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
@@ -96,10 +97,13 @@ class DprOnlandController extends Controller
     {
       $model = new DprOnland();
       $this->isUpdate = false;
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        // $conversion_factor = Si::find()->select('si_conversion_factor')->where(['si_id' => $model->dpr_si])->one()->si_conversion_factor;
-        // $model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $conversion_factor,4, '.','');
-        // $model->save();
+      if ($model->load(Yii::$app->request->post())) {
+        $model->dpr_si_no = $model->dprSi->si_no;
+        $model->dpr_area = $model->dprSi->si_area;
+        $region_id = $model->dprSi->si_region;
+        $model->dpr_region = Regions::findOne($region_id)->region_name;
+        
+        $model->save();
         
         return $this->redirect(['view', 'id' => $model->dpr_id]);
       }
@@ -122,12 +126,15 @@ class DprOnlandController extends Controller
       $this->isUpdate = true;
       $this->modelSig = $model->dpr_si;
       Yii::$app->session->set('modelSig', $this->modelSig);
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-          //$conversion_factor = Si::find()->select('si_conversion_factor')->where(['si_id' => $model->dpr_si])->one()->si_conversion_factor;
-          //$model->dpr_coverage = number_format((double)($model->dpr_shots_acc + $model->dpr_shots_skip + $model->dpr_shots_rej - $model->dpr_shots_rep) * $conversion_factor,4, '.','');
-          //$model->save();
-          
-          return $this->redirect(['view', 'id' => $model->dpr_id]);
+      if ($model->load(Yii::$app->request->post())) {
+        $model->dpr_si_no = $model->dprSi->si_no;
+        $model->dpr_area = $model->dprSi->si_area;
+        $region_id = $model->dprSi->si_region;
+        $model->dpr_region = Regions::findOne($region_id)->region_name;
+        
+        $model->save();
+        
+        return $this->redirect(['view', 'id' => $model->dpr_id]);
       }
 
       return $this->render('update', [

@@ -32,19 +32,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'dpr_date',
+            'dpr_region',
+            'dpr_area',
             [
-                'attribute' => 'dpr_field_party',
-                'format' => 'html',
-                'value' => function($model) {
-                    return Html::a($model->dprFieldParty->field_party_name, ['field-parties/view', 'id' => $model->dpr_field_party], ['data-pjax' => '0']);
-                }
+              'attribute' => 'dpr_field_party',
+              'format' => 'html',
+              'value' => function($model) {
+                  return Html::a($model->dprFieldParty->field_party_name, ['field-parties/view', 'id' => $model->dpr_field_party], ['data-pjax' => '0']);
+              }
             ],
             [
-                'attribute' => 'dpr_si',
-                'format' => 'html',
-                'value' => function($model) {
-                    return Html::a($model->dprSi->si_no . ' ('. $model->dprSi->si_area . ')', ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
-                }
+              'attribute' => 'dpr_si',
+              'format' => 'html',
+              'value' => function($model) {
+                  return Html::a($model->dprSi->si_no . ' ('. $model->dprSi->si_area . ')', ['si/view', 'id' => $model->dpr_si], ['data-pjax' => '0']);
+              }
             ],
             'dpr_shots_acc',
             'dpr_shots_rej',
